@@ -1,0 +1,39 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hello-openshift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-openshift
+  template:
+    metadata:
+      labels:
+        app: hello-openshift
+    spec:
+      containers:
+      - name: hello-openshift
+        image: 172.30.1.1:5000/training15/hello-openshift:build-1
+        volumeMounts:
+        - name: config-volume
+          mountPath: /tmp/config-data
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9080
+            scheme: HTTP
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /hello-openshift/resources/hello
+            port: 9080
+            scheme: HTTP
+          initialDelaySeconds: 30
+        imagePullPolicy: Always
+      volumes:
+      - name: config-volume
+        configMap:
+          name: hello-openshift-config
+      restartPolicy: Always
+---
