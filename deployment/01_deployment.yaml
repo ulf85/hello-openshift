@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: hello-openshift
-        image: docker-registry.default.svc:5000/training15/hello-openshift:build-1
+        image: docker-registry.default.svc:5000/training14/hello-openshift:build-1
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
