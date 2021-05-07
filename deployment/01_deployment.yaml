@@ -25,13 +25,6 @@ spec:
               name: hello-openshift-secret
               key: topsecret
         imagePullPolicy: Always
-        resources:
-          requests:
-            cpu: 200m
-            memory: 100Mi
-          limits:
-            cpu: 400m
-            memory: 750Mi
         livenessProbe:
           httpGet:
             path: /
