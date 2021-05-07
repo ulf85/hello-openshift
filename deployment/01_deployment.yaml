@@ -29,4 +29,8 @@ spec:
             scheme: HTTP
           initialDelaySeconds: 50
       restartPolicy: Always
+      volumes:
+        - name: config-value
+          configMap:
+            name: hello-openshift-config
 ---
