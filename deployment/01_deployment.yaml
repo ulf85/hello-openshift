@@ -33,7 +33,7 @@ spec:
           initialDelaySeconds: 50
       restartPolicy: Always
       volumes:
-        - name: config-value
+        - name: config-volume
           configMap:
             name: hello-openshift-config
 ---
