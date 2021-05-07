@@ -22,10 +22,10 @@ node {
         }
 
         stage('deploy staging') {
-            String imageReference = "172.30.1.1:5000/training${PROJECT_NUMBER}/hello-openshift:build-${env.BUILD_NUMBER}"
+            String imageReference = "docker-registry.default.svc:5000/training${PROJECT_NUMBER}/hello-openshift:build-${env.BUILD_NUMBER}"
             echo "updating OpenShift deployment to ${imageReference}"
 
-            sh "sed -i 's#172.30.1.1:5000/training" + PROJECT_NUMBER + "/hello-openshift:build-[0-9]\\+#$imageReference#' deployment/01_deployment.yaml"
+            sh "sed -i 's#docker-registry.default.svc:5000/training" + PROJECT_NUMBER + "/hello-openshift:build-[0-9]\\+#$imageReference#' deployment/01_deployment.yaml"
             echo "updated deployment/01_deployment.yaml"
             sh "cat deployment/01_deployment.yaml"
 
@@ -55,7 +55,7 @@ def gitCheckout(String url, String credentialsId = 'github-enterprise', String b
 
 def openShiftStartBuild(String tag, String project) {
     withEnv(["KUBECONFIG=${env.WORKSPACE}/.kube/config.${env.BUILD_NUMBER}"]) {
-        String apiUrl = 'https://158.177.141.244:8443/'
+        String apiUrl = 'https://openshift.daschner.dev:8443/'
         try {
             withCredentials([[
                                      $class          : 'UsernamePasswordMultiBinding',
@@ -63,7 +63,7 @@ def openShiftStartBuild(String tag, String project) {
                                      usernameVariable: 'USERNAME',
                                      passwordVariable: 'PASSWORD'
                              ]]) {
-                sh "oc login ${apiUrl} -u \"${USERNAME}\" -p \"${PASSWORD}\" --insecure-skip-tls-verify"
+                sh "oc login ${apiUrl} -u \"${USERNAME}\" -p \"${PASSWORD}\""
             }
 
             sh "oc project ${project}"
@@ -78,7 +78,7 @@ def openShiftStartBuild(String tag, String project) {
 
 def openShiftDeploy(String project) {
     withEnv(["KUBECONFIG=${env.WORKSPACE}/.kube/config.${env.BUILD_NUMBER}"]) {
-        String apiUrl = 'https://158.177.141.244:8443/'
+        String apiUrl = 'https://openshift.daschner.dev:8443/'
         try {
             withCredentials([[
                                      $class          : 'UsernamePasswordMultiBinding',
@@ -86,7 +86,7 @@ def openShiftDeploy(String project) {
                                      usernameVariable: 'USERNAME',
                                      passwordVariable: 'PASSWORD'
                              ]]) {
-                sh "oc login ${apiUrl} -u \"${USERNAME}\" -p \"${PASSWORD}\" --insecure-skip-tls-verify"
+                sh "oc login ${apiUrl} -u \"${USERNAME}\" -p \"${PASSWORD}\""
             }
 
             sh "oc project ${project}"

@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: hello-openshift
 spec:
-  host: hello-openshift-training15.158.177.141.244.nip.io
+  host: hello-openshift-training15.openshift.daschner.dev
   tls:
     termination: edge
   to:
