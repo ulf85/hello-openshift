@@ -18,7 +18,20 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /tmp/config-data
+        env:
+        - name: TOP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: hello-openshift-secret
+              key: topsecret
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 200m
+            memory: 100MiB
+          limits:
+            cpu: 400m
+            memory: 750MiB
         livenessProbe:
           httpGet:
             path: /
